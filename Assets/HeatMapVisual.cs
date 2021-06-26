@@ -21,10 +21,10 @@ public class HeatMapVisual : MonoBehaviour
         this.grid = grid;
         UpdateHeatMapVisual();
 
-        grid.OnGridValueChanged += Grid_OnGridValueChanged;
+        grid.OnGridValueChanged += grid_OnGridValueChanged;
     }
 
-    private void Grid_OnGridValueChanged(object sender, BattleGrid.OnGridValueChangedEventArgs e)
+    private void grid_OnGridValueChanged(object sender, BattleGrid.OnGridValueChangedEventArgs e)
     {
         updateMesh = true;
     }
