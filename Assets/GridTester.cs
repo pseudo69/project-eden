@@ -6,23 +6,23 @@ using CodeMonkey.Utils;
 public class GridTester : MonoBehaviour
 {
 
-    private Grid grid;
+    [SerializeField] private HeatMapVisual heatMapVisual;
+
+    private BattleGrid grid;
+
     
    private void Start()
     {
-        grid = new Grid(4, 2, 10f, new Vector3(20,0));
+        grid = new BattleGrid(10, 10, 10f, Vector3.zero);
+        heatMapVisual.SetGrid(grid);
     }
 
     private void Update()
     {
         if(Input.GetMouseButtonDown(0))
         {
-            grid.SetValue(UtilsClass.GetMouseWorldPosition(), 56);
-        }
-
-        if(Input.GetMouseButtonDown(1))
-        {
-            Debug.Log(grid.GetValue(UtilsClass.GetMouseWorldPosition()));
+            Vector3 position = UtilsClass.GetMouseWorldPosition();
+            grid.AddValue(position, 5, 5, 5);
         }
     }
 }
