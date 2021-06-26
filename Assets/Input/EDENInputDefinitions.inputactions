@@ -1,5 +1,5 @@
 {
-    "name": "PlayerControls",
+    "name": "EDENInputDefinitions",
     "maps": [
         {
             "name": "PlayerControls",
@@ -35,7 +35,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "WASD",
+                    "name": "Move",
                     "id": "7dd8a132-04da-4307-a9cd-7725949aaae7",
                     "path": "2DVector",
                     "interactions": "",
@@ -92,5 +92,11 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Keyboard & Mouse",
+            "bindingGroup": "Keyboard & Mouse",
+            "devices": []
+        }
+    ]
 }
