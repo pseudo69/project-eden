@@ -6,7 +6,7 @@ using CodeMonkey.Utils;
 /// <summary>
 /// Responsible for spawning grids where neccessary
 /// </summary>
-public class Grid
+public class BattleGrid
 {
 
     public const int HEAT_MAP_MAX_VALUE = 100;
@@ -25,7 +25,7 @@ public class Grid
     private Vector3 originPosition;
     private int[,] gridArray;
 
-    public Grid(int width, int height, float cellSize, Vector3 originPosition)
+    public BattleGrid(int width, int height, float cellSize, Vector3 originPosition)
     {
         this.width = width;
         this.height = height;

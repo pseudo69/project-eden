@@ -8,12 +8,12 @@ public class GridTester : MonoBehaviour
 
     [SerializeField] private HeatMapVisual heatMapVisual;
 
-    private Grid grid;
+    private BattleGrid grid;
 
     
    private void Start()
     {
-        grid = new Grid(10, 10, 10f, Vector3.zero);
+        grid = new BattleGrid(10, 10, 10f, Vector3.zero);
         heatMapVisual.SetGrid(grid);
     }
 

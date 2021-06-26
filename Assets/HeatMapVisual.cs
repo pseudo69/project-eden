@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HeatMapVisual : MonoBehaviour
 {
-    private Grid grid;
+    private BattleGrid grid;
     private Mesh mesh;
     private bool updateMesh;
 
@@ -16,7 +16,7 @@ public class HeatMapVisual : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
-    public void SetGrid(Grid grid)
+    public void SetGrid(BattleGrid grid)
     {
         this.grid = grid;
         UpdateHeatMapVisual();
@@ -24,9 +24,8 @@ public class HeatMapVisual : MonoBehaviour
         grid.OnGridValueChanged += Grid_OnGridValueChanged;
     }
 
-    private void Grid_OnGridValueChanged(object sender, Grid.OnGridValueChangedEventArgs e)
+    private void Grid_OnGridValueChanged(object sender, BattleGrid.OnGridValueChangedEventArgs e)
     {
-        Debug.Log("fired");
         updateMesh = true;
     }
 
@@ -50,7 +49,7 @@ public class HeatMapVisual : MonoBehaviour
                 Vector3 quadSize = new Vector3(1, 1) * grid.GetCellSize();
 
                 int gridValue = grid.GetValue(x, y);
-                float gridValueNormalized = (float)gridValue / Grid.HEAT_MAP_MAX_VALUE;
+                float gridValueNormalized = (float)gridValue / BattleGrid.HEAT_MAP_MAX_VALUE;
                 Vector2 gridValueUV = new Vector2(gridValueNormalized, 0f);
                 MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, gridValueUV, gridValueUV);
             }
