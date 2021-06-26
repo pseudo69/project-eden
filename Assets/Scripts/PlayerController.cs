@@ -1,14 +1,21 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController
+public class PlayerController : MonoBehaviour
 {
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        Debug.Log("OnMove");
-        Debug.Log(context);
+    [SerializeField]
+    private Rigidbody2D rigidBody;
+    
 
+    public void onMovement(InputAction.CallbackContext context)
+    {
+
+        Vector2 moveDirection = context.ReadValue<Vector2>();
+
+
+        rigidBody.position += moveDirection;
     }
+
 }
