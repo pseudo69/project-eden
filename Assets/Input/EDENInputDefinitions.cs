@@ -56,7 +56,7 @@ public class @EDENInputDefinitions : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""WASD"",
+                    ""name"": ""Move"",
                     ""id"": ""7dd8a132-04da-4307-a9cd-7725949aaae7"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
