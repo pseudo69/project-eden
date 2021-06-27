@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private Rigidbody2D rigidBody;
-    private const float Movement_Speed = 5f;
+    private const float MOVEMENT_SPEED = 5f;
     private Vector2 moveDirection;
     
     public void onMovement(InputAction.CallbackContext context)
@@ -17,6 +17,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidBody.MovePosition(rigidBody.position + moveDirection * Movement_Speed * Time.fixedDeltaTime);
+        rigidBody.MovePosition(rigidBody.position + moveDirection * MOVEMENT_SPEED * Time.fixedDeltaTime);
     }
 }
