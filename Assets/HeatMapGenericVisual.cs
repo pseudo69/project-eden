@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeatMapVisual : MonoBehaviour
+public class HeatMapGenericVisual : MonoBehaviour
 {
-    private BattleGrid<int> grid;
+    private BattleGrid<GridTester.HeatMapGridObject> grid;
     private Mesh mesh;
     private bool updateMesh;
 
@@ -16,7 +16,7 @@ public class HeatMapVisual : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
-    public void SetGrid(BattleGrid<int> grid)
+    public void SetGrid(BattleGrid<GridTester.HeatMapGridObject> grid)
     {
         this.grid = grid;
         UpdateHeatMapVisual();
@@ -24,14 +24,14 @@ public class HeatMapVisual : MonoBehaviour
         grid.OnGridValueChanged += grid_OnGridValueChanged;
     }
 
-    private void grid_OnGridValueChanged(object sender, BattleGrid<int>.OnGridValueChangedEventArgs e)
+    private void grid_OnGridValueChanged(object sender, BattleGrid<GridTester.HeatMapGridObject>.OnGridValueChangedEventArgs e)
     {
         updateMesh = true;
     }
 
     private void LateUpdate()
     {
-        if(updateMesh)
+        if (updateMesh)
         {
             updateMesh = false;
             UpdateHeatMapVisual();
@@ -48,8 +48,8 @@ public class HeatMapVisual : MonoBehaviour
                 int index = x * grid.GetHeight() + y;
                 Vector3 quadSize = new Vector3(1, 1) * grid.GetCellSize();
 
-                int gridValue = grid.GetGridObject(x, y);
-                float gridValueNormalized = (float)gridValue / BattleGrid<int>.HEAT_MAP_MAX_VALUE;
+                GridTester.HeatMapGridObject gridObject = grid.GetGridObject(x, y);
+                float gridValueNormalized = gridObject.GetValueNormalized();
                 Vector2 gridValueUV = new Vector2(gridValueNormalized, 0f);
                 MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, gridValueUV, gridValueUV);
             }
@@ -60,3 +60,4 @@ public class HeatMapVisual : MonoBehaviour
         mesh.triangles = triangles;
     }
 }
+
