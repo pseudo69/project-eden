@@ -215,9 +215,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1125465494}
-  - component: {fileID: 1125465493}
-  - component: {fileID: 1125465492}
   - component: {fileID: 1125465491}
+  - component: {fileID: 1125465492}
+  - component: {fileID: 1125465493}
   m_Layer: 0
   m_Name: HeatMapGeneric
   m_TagString: Untagged
@@ -329,8 +329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a0084b22fa40e745a738ee22a866c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heatMapVisual: {fileID: 0}
-  heatMapBoolVisual: {fileID: 0}
   heatMapGenericVisual: {fileID: 1125465491}
 --- !u!4 &1256148099
 Transform:
