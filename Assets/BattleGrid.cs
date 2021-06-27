@@ -85,7 +85,7 @@ public class BattleGrid<TGridObject>
         return new Vector3(x, y) * cellSize + originPosition;
     }
 
-    private void GetXY(Vector3 worldPosition, out int x, out int y)
+    public void GetXY(Vector3 worldPosition, out int x, out int y)
     {
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
