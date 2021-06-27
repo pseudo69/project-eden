@@ -14,12 +14,10 @@ public class PlayerController : MonoBehaviour
     public void onMovement(InputAction.CallbackContext context)
     {
         moveDirection = context.ReadValue<Vector2>();
-        //rigidBody.position += moveDirection;
     }
 
     private void FixedUpdate()
     {
-
         rigidBody.MovePosition(rigidBody.position + moveDirection * movementSpeed * Time.fixedDeltaTime);
     }
 }
