@@ -6,7 +6,7 @@ using CodeMonkey.Utils;
 /// <summary>
 /// Responsible for spawning grids where neccessary
 /// </summary>
-public class BattleGrid
+public class BattleGrid<TGridObject>
 {
 
     public const int HEAT_MAP_MAX_VALUE = 100;
@@ -23,16 +23,24 @@ public class BattleGrid
     private int height;
     private float cellSize;
     private Vector3 originPosition;
-    private int[,] gridArray;
+    private TGridObject[,] gridArray;
 
-    public BattleGrid(int width, int height, float cellSize, Vector3 originPosition)
+    public BattleGrid(int width, int height, float cellSize, Vector3 originPosition, Func<BattleGrid<TGridObject>, int, int, TGridObject> createGridObject)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
         this.originPosition = originPosition;
 
-        gridArray = new int[width, height];
+        gridArray = new TGridObject[width, height];
+        
+        for (int x = 0; x < gridArray.GetLength(0); x++)
+        {
+            for (int y = 0; y < gridArray.GetLength(1); y++)
+            {
+                gridArray[x, y] = createGridObject(this, x, y);
+            }
+        }
 
         bool showDebug = true;
         if (showDebug)
@@ -43,7 +51,7 @@ public class BattleGrid
             {
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
-                    debugTextArray[x, y] = UtilsClass.CreateWorldText(gridArray[x, y].ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 30, Color.white, TextAnchor.MiddleCenter);
+                    debugTextArray[x, y] = UtilsClass.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 30, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
                 }
@@ -52,7 +60,7 @@ public class BattleGrid
             Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
 
             OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) => {
-                debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
+                debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
             };
         }
     }
@@ -83,29 +91,29 @@ public class BattleGrid
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
     }
 
-    public void SetValue(int x, int y, int value)
+    public void SetGridObject(int x, int y, TGridObject value)
     {
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
-            gridArray[x, y] = Mathf.Clamp(value, HEAT_MAP_MIN_VALUE, HEAT_MAP_MAX_VALUE);
+            gridArray[x, y] = value;
             if (OnGridValueChanged != null) OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, y = y });
         }
     }
 
-    public void SetValue(Vector3 worldPosition, int value)
+    public void TriggerGridObectChanged(int x, int y)
+    {
+        if (OnGridValueChanged != null) OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, y = y });
+    }
+
+    public void SetGridObject(Vector3 worldPosition, TGridObject value)
     {
         int x, y;
 
         GetXY(worldPosition, out x, out y);
-        SetValue(x, y, value);
+        SetGridObject(x, y, value);
     }
 
-    public void AddValue(int x, int y, int value)
-    {
-        SetValue(x, y, GetValue(x, y) + value);
-    }
-
-    public int GetValue(int x, int y)
+    public TGridObject GetGridObject(int x, int y)
     {
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
@@ -113,48 +121,14 @@ public class BattleGrid
         }
         else
         {
-            return 0;
+            return default(TGridObject);
         }
     }
 
-    public int GetValue(Vector3 worldPosition)
+    public TGridObject GetGridObject(Vector3 worldPosition)
     {
         int x, y;
         GetXY(worldPosition, out x, out y);
-        return GetValue(x, y);
-    }
-
-    public void AddValue(Vector3 worldPosition, int value, int fullValueRange, int totalRange)
-    {
-        int lowerValueAmount = Mathf.RoundToInt((float)value / (totalRange - fullValueRange));
-
-        GetXY(worldPosition, out int originX, out int originY);
-        for (int x = 0; x < totalRange; x++)
-        {
-            for (int y = 0; y < totalRange - x; y++)
-            {
-                int radius = x + y;
-                int addValueAmount = value;
-                if (radius >= fullValueRange)
-                {
-                    addValueAmount -= lowerValueAmount * (radius - fullValueRange);
-                }
-
-                AddValue(originX + x, originY + y, addValueAmount);
-
-                if (x != 0)
-                {
-                    AddValue(originX - x, originY + y, addValueAmount);
-                }
-                if (y != 0)
-                {
-                    AddValue(originX + x, originY - y, addValueAmount);
-                    if (x != 0)
-                    {
-                        AddValue(originX - x, originY - y, addValueAmount);
-                    }
-                }
-            }
-        }
+        return GetGridObject(x, y);
     }
 }
