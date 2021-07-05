@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public void onMovement(InputAction.CallbackContext context)
     {
         moveDirection = context.ReadValue<Vector2>();
-
     }
 
     private void FixedUpdate()
@@ -30,6 +29,5 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("lastX", moveDirection.x);
             animator.SetFloat("lastY", moveDirection.y);
         }
-       
     }
 }
